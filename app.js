@@ -1,3 +1,1 @@
-const DB = require("../back-end/services/database");
-
-// console.log(DB, "DBBBBBBBBBBB");
+const DB = require("../MERN_BACK_END/services/database");
