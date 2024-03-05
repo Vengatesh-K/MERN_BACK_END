@@ -44,7 +44,7 @@ router.route("/").post(async (req, res) => {
   //   const userEmail = req.body.data.email;
   //   const userPassword = req.body.password;
   //   const node = async () => {
-  //     const user = await axois.GET(USER_API, { data: "SISI" });
+  //     const user = await axois.GET(USER_API, { data: "" });
   //   };
 
   const user = { email: email, password: password };
