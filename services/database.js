@@ -1,13 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Signup = require("../models/signup");
-const Login = require("../models/login");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
 
 const usersRoutes = require("../routes/users");
 const signupRoutes = require("../routes/signup");
 const loginRoutes = require("../routes/login");
+const updateRoutes = require("../routes/update");
+const logoutRoutes = require("../routes/logout");
 
 require("dotenv").config();
 
@@ -25,6 +24,8 @@ app.use(express.json());
 app.use("/", usersRoutes);
 app.use("/signup", signupRoutes);
 app.use("/login", loginRoutes);
+app.use("/update", updateRoutes);
+app.use("/logout", logoutRoutes);
 
 const PORT = 7000;
 

@@ -1,28 +1,7 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
-
-const Login = require("../models/login");
 const bcrypt = require("bcrypt");
 const Signup = require("../models/signup");
-
-// const authenticate = (req, res, next) => {
-//   const authHeader = req.headers["authorization"];
-
-//   const token = authHeader && authHeader.split("")[1];
-
-//   if (!token) return res.sendStatus(403);
-
-//   if (token) {
-//     jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
-//       if (err) {
-//         return res.sendStatus(403);
-//       }
-
-//       req.user = user;
-//       next();
-//     });
-//   }
-// };
 
 router.route("/").post(async (req, res) => {
   console.log(req.body.data, "req ❄️");
@@ -32,34 +11,54 @@ router.route("/").post(async (req, res) => {
   var login_user = await Signup.findOne({ email: email });
 
   if (!login_user) {
-    return res.status(400).send(`Email does not exist`);
+    return res.status(400).json({ message: `Email does not exist ❌` });
+  }
+
+  const status = {
+    loginStatus: true,
+  };
+
+  const loginStatus = await Signup.findByIdAndUpdate(login_user._id, status, {
+    new: true,
+  });
+
+  console.log(
+    login_user,
+    "loginStatusloginStatus ==================login_user"
+  );
+  console.log(loginStatus, "loginStatusloginStatus");
+
+  if (!loginStatus) {
+    return res.status(400).json({ message: `Login Status error ❌` });
   }
 
   var invalidPassword = await bcrypt.compare(password, login_user.password);
 
   if (!invalidPassword) {
-    return res.status(400).send(`Your password incorrect. Please try again`);
+    return res.status(400).json({ message: `Your password incorrect ❌` });
   }
-
-  //   const userEmail = req.body.data.email;
-  //   const userPassword = req.body.password;
-  //   const node = async () => {
-  //     const user = await axois.GET(USER_API, { data: "" });
-  //   };
 
   const user = { email: email, password: password };
 
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN);
+  const accessToken = jwt.sign(user, process.env.NEW_ACCESS_TOKEN);
 
   if (!accessToken) {
-    return res.status(400).send(`Token was not created. Please try again`);
+    return res.status(400).json({ message: `Token was not created ❌` });
   }
 
   res.status(200).json({
     accessToken: accessToken,
     message: "Login successfully 💚",
     status: "success",
-    data: { name: login_user.name, email: login_user.email },
+    data: {
+      userId: login_user.id,
+      name: login_user.name,
+      email: login_user.email,
+      phone: login_user.phone,
+      password: login_user.password,
+      image: login_user.image,
+      loginStatus: loginStatus.loginStatus,
+    },
   });
 });
 
