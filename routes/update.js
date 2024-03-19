@@ -45,16 +45,16 @@ router.route("/").post(authenticate, async (req, res) => {
     // req.body.formData;
     const userId = req.body.userId;
 
-    console.log(
-      name,
-      email,
-      phone,
-      currentPassword,
-      newPassword,
-      // image,
-      userId,
-      "************* 🌼🌼🌼🌼"
-    );
+    // console.log(
+    //   name,
+    //   email,
+    //   phone,
+    //   currentPassword,
+    //   newPassword,
+    //   // image,
+    //   userId,
+    //   "************* 🌼🌼🌼🌼"
+    // );
 
     if (name === undefined || name === null || name.length === 0) {
       return res.status(404).json({ message: "Name is required ❌" });
